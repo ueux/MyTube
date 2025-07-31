@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import SearchInput from './search-input'
-import AuthButton from '@/modules/auth/ui/components/out-button'
+import AuthButton from '@/modules/auth/ui/components/auth-button'
 
 const HomeNavbar = () => {
     return (
