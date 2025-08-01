@@ -3,7 +3,7 @@ import PageClient from "./client"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 
-export default function Home() {
+export default async function Home() {
     void trpc.hello.prefetch({ text: "Harsh" })
     return (
         <HydrateClient>
