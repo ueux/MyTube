@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { ClapperboardIcon, UserCircleIcon } from 'lucide-react'
-import Link from 'next/link'
 import React from 'react'
 
 const AuthButton = () => {
