@@ -71,6 +71,22 @@ export const FilterCarousel = ({
                             </Badge>
                         </CarouselItem>
                     ))}
+                    {!isLoading &&
+                        <CarouselItem onClick={()=>onSelect("Live")} className="pl-3 basis-auto">
+                            <Badge variant={!value ? "default" : "secondary"}
+                                className="rounded-lg px-3 py-1 cursor-pointer whitespace-nowrap text-sm">
+                                Live
+                            </Badge>
+                        </CarouselItem>
+                    }
+                    {!isLoading &&
+                        <CarouselItem onClick={()=>onSelect("Recently Uploaded")} className="pl-3 basis-auto">
+                            <Badge variant={!value ? "default" : "secondary"}
+                                className="rounded-lg px-3 py-1 cursor-pointer whitespace-nowrap text-sm">
+                                Recently Uploaded
+                            </Badge>
+                        </CarouselItem>
+                    }
                 </CarouselContent>
                 <CarouselPrevious className="left-0 z-20" />
                 <CarouselNext className="right-0 z-20" />

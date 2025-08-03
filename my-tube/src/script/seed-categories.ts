@@ -25,8 +25,6 @@ const categoryNames = [
     "Politics",
     "Religion & Spirituality",
     "Vlogging",
-    "Live",
-    "Recently Uploaded",
 ];
 
 async function main() {
