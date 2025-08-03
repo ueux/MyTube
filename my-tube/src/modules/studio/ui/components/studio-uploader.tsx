@@ -28,7 +28,7 @@ export const StudioUploader = ({ endpoint, onSuccess }: StudioUploaderProps) => 
                     </Button>
                 </MuxUploaderFileSelect>
             </div>
-            <span slot="seperator" className="hidden" />
+            <span slot="separator" className="hidden" />
             <MuxUploaderStatus
                 muxUploader={UPLOADER_ID}
                 className="text-sm"
