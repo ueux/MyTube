@@ -23,7 +23,7 @@ export const StudioUploader = ({ endpoint, onSuccess }: StudioUploaderProps) => 
                     </p>
                 </div>
                 <MuxUploaderFileSelect muxUploader={UPLOADER_ID}>
-                    <Button type="button" className="rounded-full">
+                    <Button type="button" className="rounded-full cursor-pointer">
                         Select Files
                     </Button>
                 </MuxUploaderFileSelect>

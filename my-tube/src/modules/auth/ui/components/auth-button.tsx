@@ -12,7 +12,7 @@ const AuthButton = () => {
 
         {/* <Button asChild variant={'secondary'}>
           <Link href={"/studio"}>
-          <ClapperboardIcon />
+          <ClapperboardIcon className='size-4'/>
           Studio</Link>
         </Button> */}
 
