@@ -15,9 +15,9 @@ export const VideoDescription = ({
     compactViews,expandedViews,compactDate,expandedDate,description
 }: VideoDescriptionProps) => {
     const [isExpanded,setIsExpanded]=useState(false)
-    return (<div className="bg-secondary/50 rounded-xl cursor-pointer hover:bg-secondary/70 transition">
+    return (<div onClick={()=>setIsExpanded((cur)=>!cur)} className="bg-secondary/50 rounded-xl cursor-pointer hover:bg-secondary/70 transition">
         <div className="flex gap-2 tetx-sm mb-2">
-            <span className="font-medium">{isExpanded ? expandedViews : compactViews}</span>
+            <span className="font-medium">{isExpanded ? expandedViews : compactViews} views</span>
             <span className="font-medium">{isExpanded ? expandedDate : compactDate}</span>
         </div>
         <div className="relative">

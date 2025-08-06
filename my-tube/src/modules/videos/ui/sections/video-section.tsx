@@ -5,7 +5,7 @@ import React, { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { VideoPlayer } from '../components/video-player';
 import { VideoBanner } from '../components/video-banner';
-import { VideoTopRow } from '../components/Video-top-row';
+import { VideoTopRow } from '../components/video-top-row';
 import { useAuth } from '@clerk/nextjs';
 
 interface VideoSectionProps {
