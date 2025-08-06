@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [{
       protocol: "https",
-      hostname:"c1m06bxbr9.ufs.sh"
+      hostname:"utfs.io"
     }]
   }
 };

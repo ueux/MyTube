@@ -1,7 +1,7 @@
-import { FormSection } from "../ui/sections/form-section"
+import { FormSection } from "../sections/form-section"
 
-interface PageProps{
-    videoId:string
+interface PageProps {
+    videoId: string
 }
 export const VideoView = ({ videoId }: PageProps) => {
     return (
