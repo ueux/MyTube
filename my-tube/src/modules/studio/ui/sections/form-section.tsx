@@ -1,14 +1,14 @@
 'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import z, { } from "zod"
+import z from "zod"
 
 import { trpc } from "@/trpc/client"
 import { Suspense, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCwIcon, SparklesIcon, TrashIcon } from "lucide-react"
+import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCwIcon, TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { videoUpdateSchema } from "@/db/schema"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
