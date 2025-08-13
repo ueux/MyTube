@@ -10,6 +10,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 import { UseFormReturn } from "react-hook-form"
+import { Loader2Icon } from "lucide-react"
 
 interface CategoriesSectionProps {
   form: UseFormReturn<z.infer<typeof videoUpdateSchema>>
@@ -17,7 +18,7 @@ interface CategoriesSectionProps {
 
 export const CategoriesSection = ({form}:CategoriesSectionProps) => {
     return (
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<CommentsSectionSkeleton/>}>
             <ErrorBoundary fallback={<p>Error...</p>}>
                 < CategoriesSectionSuspense form={form} />
             </ErrorBoundary>
@@ -25,6 +26,11 @@ export const CategoriesSection = ({form}:CategoriesSectionProps) => {
     )
 }
 
+const CommentsSectionSkeleton = () => {
+    return (<div className="mt-6 flex justify-center items-center">
+        <Loader2Icon className="text-muted-foreground size-7 animate-spin"/>
+    </div>)
+}
 
 const CategoriesSectionSuspense = ({form}:CategoriesSectionProps) => {
     const [categories] = trpc.categories.getMany.useSuspenseQuery()
