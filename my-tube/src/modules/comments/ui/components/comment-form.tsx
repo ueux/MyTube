@@ -12,16 +12,20 @@ import z from "zod";
 
 interface CommentFormProps {
     videoId: string;
+    parentId?: string;
     onSuccess?: () => void;
+    onCancel?: () => void;
+    variant?: "comment" | "reply";
 }
 
-export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
+export const CommentForm = ({ videoId,parentId, onSuccess,onCancel,variant="comment" }: CommentFormProps) => {
     const clerk = useClerk()
     const { user } = useUser()
     const utils = trpc.useUtils()
     const create = trpc.comments.create.useMutation({
         onSuccess: () => {
             utils.comments.getMany.invalidate({ videoId });
+            utils.comments.getMany.invalidate({ videoId ,parentId});
             form.reset()
             toast.success("Comment added")
             onSuccess?.()
@@ -36,10 +40,14 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
     const commentFormSchema = commentInsertSchema.omit({ userId: true });
     const form = useForm<z.infer<typeof commentFormSchema>>({
         resolver: zodResolver(commentFormSchema),
-        defaultValues: { videoId, value: "" }
+        defaultValues: { parentId,videoId, value: "" }
     })
     const handleSumbit = (values: z.infer<typeof commentFormSchema>) => {
         create.mutate(values)
+    }
+    const handleCancel = () => {
+        form.reset();
+        onCancel?.()
     }
     return (
         <Form {...form}>
@@ -49,13 +57,16 @@ export const CommentForm = ({ videoId, onSuccess }: CommentFormProps) => {
                     <FormField name="value" control={form.control} render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Textarea {...field} placeholder="Add a comment..." className="resize-none bg-transparent overflow-hidden min-h-0" />
+                                <Textarea {...field} placeholder={variant==="reply"?"Reply to this comment...":"Add a comment..."} className="resize-none bg-transparent overflow-hidden min-h-0" />
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )} />
                     <div className="justify-end gap-2 mt-2 flex">
-                        <Button type="submit" disabled={create.isPending} size={"sm"}>Comment</Button>
+                        {onCancel && (
+                            <Button type="button" variant={"ghost"} onClick={handleCancel}>Cancel</Button>
+                        )}
+                        <Button type="submit" disabled={create.isPending} size={"sm"}>{variant==="reply"?"Reply":"Comment"}</Button>
                     </div>
                 </div>
             </form>
