@@ -7,6 +7,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { CommentItem } from '../../../comments/ui/components/comment-item'
 import { DEFAULT_LIMIT } from '@/constants'
 import { InfiniteScroll } from '@/components/infinite-scroll'
+import { Loader2Icon } from 'lucide-react'
 
 interface CommentsSectionProps {
   videoId: string,
@@ -24,7 +25,9 @@ export const CommentsSection = ({ videoId }: CommentsSectionProps) => {
 
 const CommentsSectionSkeleton = () => {
   return (<>
-    Loading
+    <div className='mt-6 flex justify-center items-center'>
+      <Loader2Icon className='text-muted-foreground size-7 animate-spin'/>
+    </div>
   </>)
 }
 
