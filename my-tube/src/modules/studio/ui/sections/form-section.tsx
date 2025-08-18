@@ -8,7 +8,7 @@ import { Suspense, useState } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCwIcon, TrashIcon } from "lucide-react"
+import { CopyCheckIcon, CopyIcon, Globe2Icon, ImagePlusIcon, LockIcon, MoreVerticalIcon, RotateCcwIcon, RotateCwIcon, TrashIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { videoUpdateSchema } from "@/db/schema"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -112,6 +112,16 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
             toast.error("Something went wrong")
         }
     })
+    const revalidate = trpc.videos.revalidate.useMutation({
+        onSuccess: () => {
+            utils.studio.getMany.invalidate()
+            utils.studio.getOne.invalidate({ id: videoId })
+            toast.success("Video Revalidated")
+        },
+        onError: () => {
+            toast.error("Something went wrong")
+        }
+    })
     const remove = trpc.videos.remove.useMutation({
         onSuccess: () => {
             utils.studio.getMany.invalidate()
@@ -174,6 +184,10 @@ const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                     <DropdownMenuItem onClick={() => remove.mutate({ id: videoId })}>
                                         <TrashIcon className="size-4 mr-2" />
                                         Delete
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => revalidate.mutate({ id: videoId })}>
+                                        <RotateCcwIcon className="size-4 mr-2" />
+                                        Revalidate
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

@@ -27,7 +27,8 @@ export const CommentForm = ({ videoId,parentId, onSuccess,onCancel,variant="comm
             utils.comments.getMany.invalidate({ videoId });
             utils.comments.getMany.invalidate({ videoId ,parentId});
             form.reset()
-            toast.success("Comment added")
+            if(variant==="comment")toast.success("Comment added")
+            if(variant==="reply")toast.success("Reply added")
             onSuccess?.()
         },
         onError: (error) => {
