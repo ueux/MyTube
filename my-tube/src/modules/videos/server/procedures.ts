@@ -136,7 +136,6 @@ export const videosRouter = createTRPCRouter({
         return new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
       const { key: thumbnailKey, url: thumbnailUrl } =
         uploadedThumbnail.data as { key: string; url: string };
-
       const [updatedVideo] = await db
         .update(videos)
         .set({ thumbnailUrl, thumbnailKey })

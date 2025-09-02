@@ -12,7 +12,7 @@ interface VideoMenuProps {
 }
 export const VideoMenu = ({ variant = "ghost", videoId, onRemove }: VideoMenuProps) => {
     const onShare = () => {
-        const fullUrl = `${APP_URL || "http:localhost:3000"}/videos/${videoId}`
+        const fullUrl = `${APP_URL}/videos/${videoId}`
         navigator.clipboard.writeText(fullUrl)
         toast.success("Link copied to the clipboard")
 
