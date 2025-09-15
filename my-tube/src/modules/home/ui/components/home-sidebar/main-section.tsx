@@ -7,7 +7,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const items = [{ title: "Home", url: "/", icon: HomeIcon },
-    { title: "Subscriptions", url: "/feed/subscriptions", icon: PlaySquareIcon ,auth:true},
+    { title: "Subscriptions", url: "/feed/subscribed", icon: PlaySquareIcon ,auth:true},
     { title: "Trending", url: "/feed/trending", icon: FlameIcon },
 ]
 
@@ -20,7 +20,7 @@ export const MainSection = () => {
             <SidebarMenu>
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton isActive={pathname===item.url} tooltip={item.title} asChild 
+                        <SidebarMenuButton isActive={pathname===item.url} tooltip={item.title} asChild
                             onClick={(e) => {
                                 if (!isSignedIn && item.auth) {
                                     e.preventDefault()
