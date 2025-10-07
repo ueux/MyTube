@@ -35,7 +35,7 @@ export const VideoMenu = ({ variant = "ghost", videoId, onRemove }: VideoMenuPro
                     <DropdownMenuItem onClick={() => { setIsOpenPlaylistAddModal(true) }}>
                         <ListPlusIcon className='mr-2 size-4' />Add to playlist
                     </DropdownMenuItem>
-                    {onRemove && (<DropdownMenuItem onClick={() => { }}>
+                    {onRemove && (<DropdownMenuItem onClick={onRemove}>
                         <Trash2Icon className='mr-2 size-4' />Remove
                     </DropdownMenuItem>)}
                 </DropdownMenuContent>

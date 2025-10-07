@@ -119,7 +119,7 @@ export const playlistsRouter = createTRPCRouter({
             SELECT EXISTS(
               SELECT 1
               FROM ${playlistVideos}pv
-              where pv.playlist_id==${playlists.id} AND pv.video_id=${videoId}
+              where pv.playlist_id=${playlists.id} AND pv.video_id=${videoId}
               )
           )`
             : sql<boolean>`false`,
@@ -415,4 +415,128 @@ export const playlistsRouter = createTRPCRouter({
         : null;
       return { items, nextCursor };
     }),
+  getVideos: protectedProcedure
+    .input(
+      z.object({
+        playlistId:z.string().uuid(),
+        cursor: z
+          .object({
+            id: z.string().uuid(),
+            updatedAt: z.date(),
+          })
+          .nullish(),
+        limit: z.number().min(1).max(100),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+      const { cursor, limit, playlistId } = input;
+
+      const [existingPlaylist] = await db.select().from(playlists)
+        .where(and(
+          eq(playlists.id, playlistId),
+          eq(playlists.userId,userId)
+        ))
+      if (!existingPlaylist) {
+        throw new TRPCError({code:"NOT_FOUND"})
+      }
+      const videosFromPlaylist = db.$with("playlist_videos").as(
+        db
+          .select({
+            videoId: playlistVideos.videoId,
+          })
+          .from(playlistVideos)
+          .where(
+              eq(playlistVideos.playlistId, playlistId)
+          )
+      );
+
+      const data = await db
+        .with(videosFromPlaylist)
+        .select({
+          ...getTableColumns(videos),
+          user: users,
+          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
+          likeCount: db.$count(
+            videoReactions,
+            and(
+              eq(videoReactions.videoId, videos.id),
+              eq(videoReactions.type, "like")
+            )
+          ),
+          dislikeCount: db.$count(
+            videoReactions,
+            and(
+              eq(videoReactions.videoId, videos.id),
+              eq(videoReactions.type, "dislike")
+            )
+          ),
+        })
+        .from(videos)
+        .innerJoin(users, eq(videos.userId, users.id))
+        .innerJoin(
+          videosFromPlaylist,
+          eq(videos.id, videosFromPlaylist.videoId)
+        )
+        .where(
+          and(
+            eq(videos.visibility, "public"),
+            cursor
+              ? or(
+                  lt(videos.updatedAt, cursor.updatedAt),
+                  and(
+                    eq(videos.updatedAt, cursor.updatedAt),
+                    lt(videos.id, cursor.id)
+                  )
+                )
+              : undefined
+          )
+        )
+        .orderBy(desc(videos.updatedAt), desc(videos.id))
+        //Add 1 to the limit to check if there is more data to load
+        .limit(limit + 1);
+
+      const hasMore = data.length > limit;
+      //Remove the last item if there is more data
+      const items = hasMore ? data.slice(0, -1) : data;
+      //Set the next cursor to the last item if there is more data
+      const lastItem = items[items.length - 1];
+
+      const nextCursor = hasMore
+        ? {
+            id: lastItem.id,
+            updatedAt: lastItem.updatedAt,
+          }
+        : null;
+      return { items, nextCursor };
+    }),
+  getOne: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .query(async ({ input, ctx }) => {
+      const { id } = input;
+      const { id: userId } = ctx.user;
+      const [existingPlaylist] = await db.select().from(playlists)
+        .where(and(
+          eq(playlists.id, id), eq(playlists.userId, userId)
+        ))
+      if (!existingPlaylist) {
+        throw new TRPCError({code:"NOT_FOUND"})
+      }
+      return existingPlaylist;
+    }),
+  remove: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async({ input, ctx }) => {
+      const { id } = input;
+      const { id: userId } = ctx.user;
+      const [deletePlaylist] = await db.delete(playlists)
+        .where(and(
+          eq(playlists.id, id), eq(playlists.userId, userId)
+        ))
+        .returning();
+      if (!deletePlaylist) {
+        throw new TRPCError({code:"NOT_FOUND"})
+      }
+      return deletePlaylist;
+    })
 });
