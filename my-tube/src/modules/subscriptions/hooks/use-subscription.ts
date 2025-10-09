@@ -15,6 +15,7 @@ export const useSubscription = ({ userId,isSubscribed,fromVideoId}: useSubscript
             toast.success("Subscribed")
             utils.videos.getManySubscribed.invalidate();
             utils.users.getOne.invalidate({ id: userId });
+            utils.subscriptions.getMany.invalidate();
             if (fromVideoId) {
                 utils.videos.getOne.invalidate({id:fromVideoId})
             }
@@ -31,6 +32,7 @@ export const useSubscription = ({ userId,isSubscribed,fromVideoId}: useSubscript
             toast.success("Unsubscribed")
             utils.videos.getManySubscribed.invalidate();
             utils.users.getOne.invalidate({ id: userId });
+            utils.subscriptions.getMany.invalidate();
             if (fromVideoId) {
                 utils.videos.getOne.invalidate({id:fromVideoId})
             }
