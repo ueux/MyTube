@@ -55,11 +55,11 @@ export const CommentItem = ({ comment, variant = "comment" }: CommentItemProps) 
     })
     return (<div>
         <div className="flex gap-4">
-            <Link href={`/users/${comment.userId}`}>
-                <UserAvatar size={variant==="reply"?"sm":"lg"} imageUrl={comment.user.imageUrl} name={comment.user.name} />
+            <Link prefetch href={`/users/${comment.userId}`}>
+                <UserAvatar size={variant === "reply" ? "sm" : "lg"} imageUrl={comment.user.imageUrl} name={comment.user.name} />
             </Link>
             <div className="flex-1 min-w-0">
-                <Link href={`/users/${comment.userId}`}>
+                <Link prefetch href={`/users/${comment.userId}`}>
                     <div className="flex items-center gap-2 mb-0.5">
                         <span className="font-medium text-sm pb-0.5">{comment.user.name}</span>
                         <span className="text-xs text-muted-foreground" >{formatDistanceToNow(comment.createdAt, { addSuffix: true })}</span>
@@ -103,14 +103,14 @@ export const CommentItem = ({ comment, variant = "comment" }: CommentItemProps) 
         {isReplyOpen && variant === "comment" && (
             <div className="mt-4 pl-14">
                 <CommentForm videoId={comment.videoId} parentId={comment.id} variant="reply"
-                    onCancel={()=>setIsReplyOpen(false)}
+                    onCancel={() => setIsReplyOpen(false)}
                     onSuccess={() => {
-                    setIsReplyOpen(true)
-                    setIsRepliesOpen(true)
-                }}/>
+                        setIsReplyOpen(true)
+                        setIsRepliesOpen(true)
+                    }} />
             </div>
         )}
-        {comment.replyCount>0 && variant==="comment" && (
+        {comment.replyCount > 0 && variant === "comment" && (
             <div className="pl-14">
                 <Button variant={"tertiary"} size={"sm"} onClick={() => setIsRepliesOpen((curr) => !curr)}>
                     {isRepliesOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}

@@ -11,7 +11,7 @@ const AuthButton = () => {
       <SignedIn>
 
         {/* <Button asChild variant={'secondary'}>
-          <Link href={"/studio"}>
+          <Link prefetch href={"/studio"}>
           <ClapperboardIcon className='size-4'/>
           Studio</Link>
         </Button> */}
@@ -20,7 +20,7 @@ const AuthButton = () => {
           <UserButton.MenuItems>
             <UserButton.Link label='My profile' labelIcon={<UserIcon className='size-4' />} href='/users/current' />
             <UserButton.Link label='Studio' labelIcon={<ClapperboardIcon className='size-4' />} href='/studio' />
-            <UserButton.Action label='manageAccount'/>
+            <UserButton.Action label='manageAccount' />
           </UserButton.MenuItems>
         </UserButton>
       </SignedIn>
